@@ -1,11 +1,9 @@
 'use client';
 import SectionTitle from '@/components/SectionTitle';
 import { PROJECTS } from '@/lib/data';
-import { cn } from '@/lib/utils';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/all';
-import Image from 'next/image';
 import React, { useRef, useState, MouseEvent } from 'react';
 import Project from './Project';
 
@@ -15,37 +13,31 @@ const ProjectList = () => {
     const containerRef = useRef<HTMLDivElement>(null);
     const projectListRef = useRef<HTMLDivElement>(null);
     const imageContainer = useRef<HTMLDivElement>(null);
-    const imageRef = useRef<HTMLImageElement>(null);
     const [selectedProject, setSelectedProject] = useState<string | null>(
         PROJECTS[0].slug,
     );
 
-    // update imageRef.current href based on the cursor hover position
-    // also update image position
+    // update image position on mouse move
     useGSAP(
         (context, contextSafe) => {
-            // show image on hover
             if (window.innerWidth < 768) {
                 setSelectedProject(null);
                 return;
             }
 
             const handleMouseMove = contextSafe?.((e: MouseEvent) => {
-                if (!containerRef.current) return;
-                if (!imageContainer.current) return;
+                if (!containerRef.current || !imageContainer.current) return;
 
                 if (window.innerWidth < 768) {
                     setSelectedProject(null);
                     return;
                 }
 
-                const containerRect =
-                    containerRef.current?.getBoundingClientRect();
-                const imageRect =
-                    imageContainer.current.getBoundingClientRect();
+                const containerRect = containerRef.current.getBoundingClientRect();
+                const imageRect = imageContainer.current.getBoundingClientRect();
                 const offsetTop = e.clientY - containerRect.y;
 
-                // if cursor is outside the container, hide the image
+                // hide image if cursor leaves container
                 if (
                     containerRect.y > e.clientY ||
                     containerRect.bottom < e.clientY ||
@@ -74,6 +66,7 @@ const ProjectList = () => {
         { scope: containerRef, dependencies: [containerRef.current] },
     );
 
+    // entrance animation on scroll
     useGSAP(
         () => {
             const tl = gsap.timeline({
@@ -109,30 +102,12 @@ const ProjectList = () => {
                 <SectionTitle title="SELECTED PROJECTS" />
 
                 <div className="group/projects relative" ref={containerRef}>
+                    {/* Image container (kept for future use) */}
                     {selectedProject !== null && (
                         <div
                             className="max-md:hidden absolute right-0 top-0 z-[1] pointer-events-none w-[200px] xl:w-[350px] aspect-[3/4] overflow-hidden opacity-0"
                             ref={imageContainer}
-                        >
-                            {/* {PROJECTS.map((project) => (
-                                <Image
-                                    src={project.thumbnail}
-                                    alt="Project"
-                                    width="400"
-                                    height="500"
-                                    className={cn(
-                                        'absolute inset-0 transition-all duration-500 w-full h-full object-cover',
-                                        {
-                                            'opacity-0':
-                                                project.slug !==
-                                                selectedProject,
-                                        },
-                                    )}
-                                    ref={imageRef}
-                                    key={project.slug}
-                                />
-                            ))} */}
-                        </div>
+                        />
                     )}
 
                     <div
@@ -143,7 +118,6 @@ const ProjectList = () => {
                             <Project
                                 index={index}
                                 project={project}
-                                selectedProject={selectedProject}
                                 onMouseEnter={handleMouseEnter}
                                 key={project.slug}
                             />

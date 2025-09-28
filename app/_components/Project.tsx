@@ -107,9 +107,9 @@ const Project = ({ index, project, selectedProject, onMouseEnter }: Props) => {
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
-            {selectedProject === null && (
+            {/* {selectedProject === null && (
                 <Image
-                    src={project.thumbnail}
+                    src={null}
                     alt="Project"
                     width="300"
                     height="200"
@@ -119,7 +119,7 @@ const Project = ({ index, project, selectedProject, onMouseEnter }: Props) => {
                     key={project.slug}
                     loading="lazy"
                 />
-            )}
+            )} */}
             <div className="flex gap-2 md:gap-5">
                 <div className="font-anton text-muted-foreground">
                     _{(index + 1).toString().padStart(2, '0')}.

@@ -21,8 +21,8 @@ export interface IProject {
     description: string;
     role: string;
     techStack: string[];
-    thumbnail: string;
-    longThumbnail: string;
+    // thumbnail: string;
+    // longThumbnail: string;
     images: string[];
     slug: string;
     liveUrl?: string;

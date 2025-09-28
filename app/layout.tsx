@@ -29,8 +29,8 @@ const robotoFlex = Roboto_Flex({
 });
 
 export const metadata: Metadata = {
-    title: 'Portfolio - Tajmirul Islam',
-    description: 'Personal portfolio of Tajmirul Islam',
+    title: 'Portfolio - Lukmaan',
+    description: 'Personal portfolio of Lukmaan',
 };
 
 export default function RootLayout({
@@ -40,17 +40,6 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <GoogleAnalytics gaId="G-MHLY1LNGY5" />
-            <Script id="hotjar" strategy="afterInteractive">
-                {`(function(h,o,t,j,a,r){
-                h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-                h._hjSettings={hjid:6380611,hjsv:6};
-                a=o.getElementsByTagName('head')[0];
-                r=o.createElement('script');r.async=1;
-                r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-                a.appendChild(r);
-            })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');`}
-            </Script>
             <body
                 className={`${antonFont.variable} ${robotoFlex.variable} antialiased`}
             >

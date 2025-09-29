@@ -54,13 +54,12 @@ const Banner = () => {
                     </p>
                     <Button
                         as="link"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        href={GENERAL_INFO.upworkProfile}
+                        href="/Lukmaan_Nadaf_Resume.pdf"
+                        download="Lukmaan_Nadaf_Resume.pdf"
                         variant="primary"
                         className="mt-9 banner-button slide-up-and-fade"
                     >
-                        Hire Me
+                        Resume
                     </Button>
                 </div>
 

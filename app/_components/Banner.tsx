@@ -1,94 +1,69 @@
 'use client';
-import ArrowAnimation from '@/components/ArrowAnimation';
-import Button from '@/components/Button';
-import { useGSAP } from '@gsap/react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/all';
-import React from 'react';
+import React from "react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Link from "next/link";
+import ArrowAnimation from "@/components/ArrowAnimation";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const Banner = () => {
     const containerRef = React.useRef<HTMLDivElement>(null);
 
-    useGSAP(
-        () => {
-            const tl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: containerRef.current,
-                    start: 'bottom 70%',
-                    end: 'bottom 10%',
-                    scrub: 1,
-                },
-            });
-
-            tl.fromTo(
-                '.slide-up-and-fade',
-                { y: 0 },
-                { y: -150, opacity: 0, stagger: 0.02 },
-            );
-        },
-        { scope: containerRef },
-    );
+    useGSAP(() => {
+        gsap.fromTo(
+            ".slide-up",
+            { y: 50, opacity: 0 },
+            { y: 0, opacity: 1, stagger: 0.1, duration: 1, ease: "power3.out" }
+        );
+    }, { scope: containerRef });
 
     return (
-        <section className="relative overflow-hidden" id="banner">
-            <ArrowAnimation />
-            <div
-                className="container h-[100svh] min-h-[530px] max-md:pb-10 flex justify-between items-center max-md:flex-col"
-                ref={containerRef}
-            >
-                <div className="max-md:grow max-md:flex flex-col justify-center items-start max-w-[544px]">
-                    <h1 className="banner-title slide-up-and-fade leading-[.95] text-6xl sm:text-[80px] font-anton">
-                        <span className="text-primary">FULL-STACK</span>
-                        <br /> <span className="ml-4">DEVELOPER</span>
-                    </h1>
-                    <p className="banner-description slide-up-and-fade mt-6 text-lg text-muted-foreground">
-                        Hi! I&apos;m{' '}
-                        <span className="font-medium text-foreground">
-                            Lukmaan
-                        </span>
-                        — a Full-Stack Developer skilled in Next.js, TypeScript,
-                        and MongoDB. I build fast and scalable web apps.
-                    </p>
-                    <Button
-                        as="link"
-                        href="/Lukmaan_Nadaf_Resume.pdf"
-                        download="Lukmaan_Nadaf_Resume.pdf"
-                        variant="primary"
-                        className="mt-9 banner-button slide-up-and-fade"
-                    >
-                        Resume
-                    </Button>
-                </div>
-
-                <div className="md:absolute bottom-[10%] right-[4%] flex md:flex-col gap-4 md:gap-8 text-center md:text-right">
-                    <div className="slide-up-and-fade">
-                        <h5 className="text-3xl sm:text-4xl font-anton text-primary mb-1.5">
-                            10+
-                        </h5>
-                        <p className="text-muted-foreground">
-                            Completed Projects
-                        </p>
-                    </div>
-                    <div className="slide-up-and-fade">
-                        <h5 className="text-3xl sm:text-4xl font-anton text-primary mb-1.5">
-                            1
-                        </h5>
-                        <p className="text-muted-foreground">
-                            Freelance Clients
-                        </p>
-                    </div>
-                    <div className="slide-up-and-fade">
-                        <h5 className="text-3xl sm:text-4xl font-anton text-primary mb-1.5">
-                            900+
-                        </h5>
-                        <p className="text-muted-foreground">
-                            LinkedIn Connections
-                        </p>
-                    </div>
-                </div>
+        <section
+            ref={containerRef}
+            className="relative min-h-[100dvh] flex items-center justify-center text-white bg-black banner-bg overflow-hidden px-4 sm:px-6"
+        >
+            {/* Top Links */}
+            <div className="absolute top-4 left-4 text-[10px] xs:text-xs sm:text-sm slide-up">
+                <a href="https://github.com/lukmaann" className="underline break-all">
+                    GITHUB.COM/LUKMAANN
+                </a>
             </div>
+            <div className="absolute top-4 right-4 text-[10px] xs:text-xs sm:text-sm slide-up max-w-[45%] text-right">
+                <a
+                    href="https://linkedin.com/in/lukmaann"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline break-all"
+                >
+                    LINKEDIN.COM/IN/LUKMAANN
+                </a>
+            </div>
+
+            {/* Center Name + Resume */}
+            <div className="flex flex-col items-center justify-center text-center px-2">
+                <h1 className="font-anton slide-up text-5xl sm:text-7xl md:text-9xl lg:text-[10vw] leading-none">
+                    LUKMAAN
+                </h1>
+
+                <Link
+                    href="/Lukmaan_Nadaf_Resume.pdf"
+                    target="_blank"
+                    className="bg-white text-black mt-6 px-6 py-3 sm:px-8 sm:py-4 font-anton uppercase tracking-wide text-sm sm:text-base md:text-lg hover:bg-transparent hover:text-white border border-white transition-colors duration-300 slide-up"
+                >
+                    View Resume
+                </Link>
+            </div>
+
+            {/* Bottom Info */}
+            <div className="absolute bottom-6 left-4 text-[10px] xs:text-xs sm:text-sm slide-up">
+                FULL-STACK DEVELOPER · INDIA
+            </div>
+            <div className="absolute bottom-6 right-4 text-[10px] xs:text-xs sm:text-sm slide-up text-right max-w-[50%]">
+                Next.js · TypeScript · MongoDB
+            </div>
+            <ArrowAnimation></ArrowAnimation>
         </section>
     );
 };

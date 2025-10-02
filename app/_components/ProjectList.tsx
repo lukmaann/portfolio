@@ -1,132 +1,154 @@
 'use client';
-import SectionTitle from '@/components/SectionTitle';
+
 import { PROJECTS } from '@/lib/data';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/all';
-import React, { useRef, useState, MouseEvent } from 'react';
-import Project from './Project';
+import { useRef, useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
 
-gsap.registerPlugin(ScrollTrigger, useGSAP);
+gsap.registerPlugin(ScrollTrigger);
 
-const ProjectList = () => {
+const Projects = () => {
     const containerRef = useRef<HTMLDivElement>(null);
-    const projectListRef = useRef<HTMLDivElement>(null);
-    const imageContainer = useRef<HTMLDivElement>(null);
-    const [selectedProject, setSelectedProject] = useState<string | null>(
-        PROJECTS[0].slug,
-    );
+    const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
-    // update image position on mouse move
-    useGSAP(
-        (context, contextSafe) => {
-            if (window.innerWidth < 768) {
-                setSelectedProject(null);
-                return;
-            }
+    // Animate projects on scroll
+    useGSAP(() => {
+        gsap.from('.project-row', {
+            y: 60,
+            opacity: 0,
+            stagger: 0.2,
+            ease: 'power3.out',
+            scrollTrigger: {
+                trigger: containerRef.current,
+                start: 'top 85%',
+            },
+        });
+    }, []);
 
-            const handleMouseMove = contextSafe?.((e: MouseEvent) => {
-                if (!containerRef.current || !imageContainer.current) return;
-
-                if (window.innerWidth < 768) {
-                    setSelectedProject(null);
-                    return;
-                }
-
-                const containerRect = containerRef.current.getBoundingClientRect();
-                const imageRect = imageContainer.current.getBoundingClientRect();
-                const offsetTop = e.clientY - containerRect.y;
-
-                // hide image if cursor leaves container
-                if (
-                    containerRect.y > e.clientY ||
-                    containerRect.bottom < e.clientY ||
-                    containerRect.x > e.clientX ||
-                    containerRect.right < e.clientX
-                ) {
-                    return gsap.to(imageContainer.current, {
-                        duration: 0.3,
-                        opacity: 0,
-                    });
-                }
-
-                gsap.to(imageContainer.current, {
-                    y: offsetTop - imageRect.height / 2,
-                    duration: 1,
-                    opacity: 1,
-                });
-            }) as any;
-
-            window.addEventListener('mousemove', handleMouseMove);
-
-            return () => {
-                window.removeEventListener('mousemove', handleMouseMove);
-            };
-        },
-        { scope: containerRef, dependencies: [containerRef.current] },
-    );
-
-    // entrance animation on scroll
-    useGSAP(
-        () => {
-            const tl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: containerRef.current,
-                    start: 'top bottom',
-                    end: 'top 80%',
-                    toggleActions: 'restart none none reverse',
-                    scrub: 1,
-                },
-            });
-
-            tl.from(containerRef.current, {
-                y: 150,
-                opacity: 0,
-            });
-        },
-        { scope: containerRef },
-    );
-
-    const handleMouseEnter = (slug: string) => {
+    const toggleProject = (index: number) => {
         if (window.innerWidth < 768) {
-            setSelectedProject(null);
-            return;
+            setActiveIndex(activeIndex === index ? null : index);
         }
-
-        setSelectedProject(slug);
     };
 
     return (
-        <section className="pb-section" id="selected-projects">
-            <div className="container">
-                <SectionTitle title="SELECTED PROJECTS" />
+        <section
+            ref={containerRef}
+            id="projects"
+            className="relative bg-white text-black min-h-screen py-24"
+        >
+            {/* Section Heading */}
+            <header className="text-center mb-24">
+                <h1 className="text-[14vw] md:text-[8vw] font-anton uppercase leading-none text-black tracking-wide">
+                    Recent Work
+                </h1>
+            </header>
 
-                <div className="group/projects relative" ref={containerRef}>
-                    {/* Image container (kept for future use) */}
-                    {selectedProject !== null && (
-                        <div
-                            className="max-md:hidden absolute right-0 top-0 z-[1] pointer-events-none w-[200px] xl:w-[350px] aspect-[3/4] overflow-hidden opacity-0"
-                            ref={imageContainer}
-                        />
-                    )}
+            {/* Project List */}
+            <div className="container max-w-6xl mx-auto space-y-20">
+                {PROJECTS.map((project, index) => {
+                    const isOpen = activeIndex === index;
 
-                    <div
-                        className="flex flex-col max-md:gap-10"
-                        ref={projectListRef}
-                    >
-                        {PROJECTS.map((project, index) => (
-                            <Project
-                                index={index}
-                                project={project}
-                                onMouseEnter={handleMouseEnter}
-                                key={project.slug}
-                            />
-                        ))}
-                    </div>
-                </div>
+                    return (
+                        <article
+                            key={project.slug}
+                            className="project-row pb-12 cursor-pointer group transition-colors"
+                            onMouseEnter={() => {
+                                if (window.innerWidth >= 768) setActiveIndex(index);
+                            }}
+                            onMouseLeave={() => {
+                                if (window.innerWidth >= 768) setActiveIndex(null);
+                            }}
+                            onClick={() => toggleProject(index)}
+                        >
+                            {/* Project Header */}
+                            <div className="flex justify-between items-start">
+                                <div>
+                                    <h2 className="text-4xl md:text-6xl font-anton uppercase group-hover:text-primary transition-colors">
+                                        {project.title}
+                                    </h2>
+                                    <p className="text-neutral-600 mt-2">{project.year}</p>
+                                </div>
+                            </div>
+
+                            {/* Expandable Content */}
+                            <div
+                                className={`transition-all duration-700 overflow-hidden ${isOpen ? 'max-h-[2000px] mt-8 opacity-100' : 'max-h-0 opacity-0'
+                                    }`}
+                            >
+                                {/* Description */}
+                                <div
+                                    className="prose max-w-none text-neutral-700 prose-li:marker:text-primary prose-strong:text-black"
+                                    dangerouslySetInnerHTML={{ __html: project.description }}
+                                />
+
+                                {/* Role */}
+                                {project.role && (
+                                    <div
+                                        className="mt-6 text-neutral-700 leading-relaxed"
+                                        dangerouslySetInnerHTML={{ __html: project.role }}
+                                    />
+                                )}
+
+                                {/* Tech Stack */}
+                                {project.techStack && (
+                                    <div className="flex flex-wrap gap-3 mt-6">
+                                        {project.techStack.map((tech) => (
+                                            <span
+                                                key={tech}
+                                                className="px-3 py-1 border border-neutral-400 rounded-full text-sm text-neutral-700 bg-neutral-100 hover:border-primary hover:text-primary transition-colors"
+                                            >
+                                                {tech}
+                                            </span>
+                                        ))}
+                                    </div>
+                                )}
+
+                                {/* Visit Site Button */}
+                                {project.liveUrl && (
+                                    <div className="mt-8">
+                                        <Link
+                                            href={project.liveUrl}
+                                            target="_blank"
+                                            className="inline-block px-6 py-3 font-anton uppercase border-2 border-black text-black hover:bg-black hover:text-white transition-colors duration-300"
+                                        >
+                                            Visit Site
+                                        </Link>
+                                    </div>
+                                )}
+
+                                {/* Images */}
+                                {project.images && project.images.length > 0 && (
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8">
+                                        {project.images.map((img, i) => (
+                                            <div
+                                                key={i}
+                                                className="relative w-full rounded-lg overflow-hidden"
+                                            >
+                                                <Image
+                                                    src={img}
+                                                    alt={`${project.title} screenshot ${i + 1}`}
+                                                    width={1920}
+                                                    height={1080}
+                                                    className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                                                />
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        </article>
+                    );
+                })}
             </div>
+
+            {/* Smooth Gradient Fade into Footer */}
+            {/* <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-b from-white to-black pointer-events-none" /> */}
         </section>
     );
 };
 
-export default ProjectList;
+export default Projects;

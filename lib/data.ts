@@ -2,27 +2,25 @@ import { IProject } from '@/types';
 
 export const GENERAL_INFO = {
   email: 'lukmaannadaf@gmail.com',
-
-  emailSubject: "Let's collaborate on a project",
+  emailSubject: "Collaboration Opportunity",
   emailBody:
-    'Hi Lukmaan, I came across your portfolio and wanted to connect...',
+    "Hi Lukmaan, I came across your portfolio and I'm interested in exploring potential collaboration opportunities.",
 
-  oldPortfolio: '', // if you have one, plug the URL here
-  upworkProfile: '', // if you’re on Upwork, drop the link here
+  portfolio: 'https://lukmaann.vercel.app/',
+  github: 'https://github.com/lukmaann',
+  linkedin: 'https://www.linkedin.com/in/lukmaann/',
 };
 
 export const SOCIAL_LINKS = [
-  { name: 'github', url: 'https://github.com/lukmaann' },
-  { name: 'linkedin', url: 'https://www.linkedin.com/in/lukmaann/' },
-  // { name: 'facebook', url: 'https://www.facebook.com/tajmirul.2000' },
-  // { name: 'Old Version', url: GENERAL_INFO.oldPortfolio },
+  { name: 'GitHub', url: GENERAL_INFO.github },
+  { name: 'LinkedIn', url: GENERAL_INFO.linkedin },
 ];
 
 export const MY_STACK = {
   frontend: [
-    { name: 'Javascript', icon: '/logo/js.png' },
-    { name: 'Typescript', icon: '/logo/ts.png' },
-    { name: 'React', icon: '/logo/react.png' },
+    { name: 'JavaScript', icon: '/logo/js.png' },
+    { name: 'TypeScript', icon: '/logo/ts.png' },
+    { name: 'React.js', icon: '/logo/react.png' },
     { name: 'Next.js', icon: '/logo/next.png' },
     { name: 'Redux', icon: '/logo/redux.png' },
     { name: 'Tailwind CSS', icon: '/logo/tailwind.png' },
@@ -43,8 +41,8 @@ export const MY_EXPERIENCE = [
   {
     title: 'Freelance Web Developer',
     company: 'Starline Industries Pvt. Ltd.',
-    duration: 'Feb 2024 – Mar 2024',
-    description: `Built a custom calculator tool to automate battery cost estimation based on raw material availability and market pricing. Reduced manual effort by 90%.`,
+    duration: 'Feb 2024 – May 2024',
+    description: `Developed a custom battery cost calculator that automated raw material–based pricing, reducing manual effort by 90%. Delivered a fully functional production tool within 4 weeks.`,
   },
 ];
 
@@ -55,49 +53,46 @@ export const PROJECTS: IProject[] = [
     liveUrl: 'https://starlinecalc.vercel.app/',
     year: 2024,
     description: `
-      Built a production tool for Starline Industries Pvt. Ltd. to estimate battery manufacturing costs based on raw material inputs and prices.
+      A production-ready tool for Starline Industries Pvt. Ltd. to calculate battery manufacturing costs based on raw material inputs and market pricing.
       <br/><br/>
-      🔑 Highlights:
+      <strong>Highlights:</strong>
       <ul>
-        <li>📉 Reduced manual work by 90% by automating complex calculations</li>
-        <li>🧮 Implemented raw material cost estimation formulas with dynamic input</li>
-        <li>🖥️ Delivered a clean UI with error handling and validation</li>
+        <li>📉 Automated complex cost estimation workflows (90% time savings)</li>
+        <li>🧮 Built robust formula-driven calculations with validation</li>
+        <li>🖥️ Designed a clean, error-proof UI for industrial use</li>
       </ul>
     `,
     role: `
       Freelance Full-Stack Developer<br/>
-      - Designed and built the full-stack solution independently<br/>
-      - Next.js
+      - Designed and implemented the full-stack solution independently<br/>
+      - Built with Next.js
     `,
-    techStack: ['Next.js'],
+    techStack: ['Next.js', 'Tailwind CSS'],
     images: ['/projects/images/battery1.png', '/projects/images/battery2.png'],
   },
   {
-    title: 'Polynote – AI-Powered Collaboration Platform',
+    title: 'Polynote – AI Collaboration Platform',
     slug: 'polynote',
     liveUrl: 'https://polynote.vercel.app/',
     year: 2025,
     description: `
-      An AI-enhanced collaboration workspace that combines an intelligent text editor with an infinite canvas. 
-      PolyNote helps teams write, brainstorm, and organize ideas — with AI handling summarization, action items, 
-      and smart suggestions in real time.
+      An AI-powered workspace combining an intelligent text editor with an infinite canvas for real-time team collaboration.
       <br/><br/>
-      🌟 Core Features:
+      <strong>Core Features:</strong>
       <ul>
-        <li>🧠 AI-powered text editing with grammar, tone, and clarity improvements</li>
-        <li>📊 Automatic summarization of long notes, meetings, and documents</li>
-        <li>✅ Action item extraction with deadlines and key decisions</li>
-        <li>🖌️ Infinite canvas for brainstorming, sketching, and design reviews</li>
-        <li>🔄 Real-time collaboration with live cursors, conflict-free sync</li>
-        <li>🔐 Secure by design with private AI processing</li>
+        <li>🧠 AI-assisted writing: grammar, tone, clarity improvements</li>
+        <li>📊 Automatic meeting & document summarization</li>
+        <li>✅ Action item extraction with deadlines & key decisions</li>
+        <li>🖌️ Infinite canvas for brainstorming & design reviews</li>
+        <li>🔄 Real-time multi-user sync with conflict resolution</li>
+        <li>🔐 Privacy-focused AI processing</li>
       </ul>
-      Loved by teams for documentation, brainstorming, design reviews, and education.
     `,
     role: `
       Full-Stack Developer<br/>
-      - Designed and developed the AI-assisted editor and collaborative canvas<br/>
-      - Integrated summarization, action-item extraction, and smart suggestions<br/>
-      - Built real-time collaboration with WebSockets and optimized performance for large teams
+      - Developed AI editor and collaborative canvas<br/>
+      - Integrated summarization, task extraction, and live sync<br/>
+      - Optimized for large-scale team collaboration
     `,
     techStack: [
       'Next.js',
@@ -106,7 +101,7 @@ export const PROJECTS: IProject[] = [
       'Convex',
       'Tailwind CSS',
       'Clerk',
-      'gemini-2.5',
+      'Gemini 2.5',
     ],
     images: [
       '/projects/images/polynote1.png',
@@ -119,21 +114,21 @@ export const PROJECTS: IProject[] = [
     liveUrl: 'https://rimrubber.netlify.app/',
     year: 2024,
     description: `
-      A full-stack tire reselling web app allowing users to post and browse tire ads with admin approvals and mobile-first UI.
+      A full-stack platform for posting, browsing, and managing tire resale ads with admin moderation.
       <br/><br/>
-      🔧 Features:
+      <strong>Features:</strong>
       <ul>
-        <li>📤 User ad posting with image upload and description</li>
-        <li>🛡️ Admin dashboard to approve or reject listings</li>
-        <li>📱 Fully responsive frontend for mobile users</li>
-        <li>🔐 Google OAuth integration</li>
+        <li>📤 User ad posting with image uploads</li>
+        <li>🛡️ Admin dashboard for approvals</li>
+        <li>📱 Mobile-first, responsive design</li>
+        <li>🔐 Secure Google OAuth login</li>
       </ul>
     `,
     role: `
       Full-Stack Developer<br/>
-      - Built with the MERN stack (MongoDB, Express, React, Node)<br/>
-      - Implemented authentication using Firebase / Google login<br/>
-      - Backend hosted on Render, frontend on Netlify
+      - Built with MERN stack (MongoDB, Express, React, Node)<br/>
+      - Implemented Firebase Google login<br/>
+      - Hosted backend on Render & frontend on Netlify
     `,
     techStack: [
       'React.js',
@@ -145,7 +140,7 @@ export const PROJECTS: IProject[] = [
       'Netlify',
       'Render',
     ],
-    images: ['/projects/images/rimrubber-1.png', '/projects/images/rimrubber-2.png'],
+    images: ['/projects/images/rimrubber1.png', '/projects/images/rimrubber2.png'],
   },
   {
     title: 'Hazel – Social Web App',
@@ -153,32 +148,31 @@ export const PROJECTS: IProject[] = [
     liveUrl: 'https://hazelsocial.netlify.app/',
     year: 2024,
     description: `
-      A social media platform for users to post, like, and comment on content, featuring moderation and authentication.
+      A social platform for creating, liking, and commenting on posts, with admin moderation and secure authentication.
       <br/><br/>
-      🔥 Features:
+      <strong>Features:</strong>
       <ul>
-        <li>📝 Create and interact with posts (likes, comments)</li>
-        <li>🛑 Admin model for report handling and moderation</li>
-        <li>🔐 JWT-based secure login</li>
+        <li>📝 Post creation and interaction (likes, comments)</li>
+        <li>🛑 Admin reporting & moderation system</li>
+        <li>🔐 JWT-based authentication</li>
       </ul>
     `,
     role: `
       Full-Stack Developer<br/>
-      - Built frontend with React.js and Tailwind CSS<br/>
-      - Backend with Node.js, Express, and MongoDB<br/>
-      - Hosted using Render + Netlify for free deployment
+      - Frontend: React.js + Tailwind CSS<br/>
+      - Backend: Node.js, Express, MongoDB<br/>
+      - Deployed via Render & Netlify
     `,
     techStack: [
       'React.js',
       'Node.js',
       'Express.js',
       'MongoDB',
-      'Mongoose',
       'JWT',
       'Tailwind CSS',
       'Netlify',
       'Render',
     ],
-    images: ['/projects/images/hazel-1.png', '/projects/images/hazel-2.png'],
+    images: ['/projects/images/hazel1.png', '/projects/images/hazel2.png'],
   },
 ];

@@ -3,66 +3,67 @@
 @tailwind utilities;
 
 @layer base {
-    :root {
-        /* 🌌 Gen Z Vibe - Dark mode first */
-        --background: 240 6% 10%;
-        --background-light: 240 6% 14%;
-        --foreground: 0 0% 95%;
+  :root {
+    /* 🖤 Minimal Monochrome Base */
+    --background: 240 5% 9%;        /* Deep Charcoal Black */
+    --background-light: 240 5% 13%; /* Slightly lighter black */
+    --foreground: 0 0% 98%;         /* Almost pure white */
 
-        --card: 248 15% 12%;
-        --card-foreground: 0 0% 98%;
+    --card: 240 6% 12%; 
+    --card-foreground: 0 0% 95%;
 
-        --popover: 248 15% 10%;
-        --popover-foreground: 0 0% 98%;
+    --popover: 240 6% 10%;
+    --popover-foreground: 0 0% 95%;
 
-        --primary: 278 100% 65%; /* Neon Purple */
-        --primary-foreground: 255 100% 95%;
+    /* ⚡ Accent: Clean Neon Cyan/Blue */
+    --primary: 190 100% 65%;       /* Electric Cyan */
+    --primary-foreground: 0 0% 98%; 
 
-        --secondary: 185 100% 60%; /* Aqua Blue */
-        --secondary-foreground: 240 100% 10%;
+    --secondary: 0 0% 85%;         /* Neutral Gray for contrast */
+    --secondary-foreground: 240 6% 10%;
 
-        --muted: 220 13% 20%; /* Dim Gray-Blue */
-        --muted-foreground: 220 10% 70%;
+    --muted: 240 5% 20%; 
+    --muted-foreground: 240 5% 70%;
 
-        --accent: 340 95% 65%; /* Neon Pink */
-        --accent-foreground: 0 0% 100%;
+    --accent: 200 95% 65%;         /* Slightly softer neon blue */
+    --accent-foreground: 0 0% 100%;
 
-        --destructive: 0 85% 55%; /* Bright Red */
-        --destructive-foreground: 0 0% 100%;
+    --destructive: 0 85% 55%;      /* Red for errors only */
+    --destructive-foreground: 0 0% 100%;
 
-        --border: 240 10% 25%;
-        --input: 240 10% 20%;
-        --ring: 278 100% 65%;
+    --border: 240 6% 20%;
+    --input: 240 6% 18%;
+    --ring: 190 100% 65%;          /* Neon Cyan glow */
 
-        /* Chart Colors - Modern + Vibrant */
-        --chart-1: 280 90% 60%; /* Purple */
-        --chart-2: 190 80% 55%; /* Cyan */
-        --chart-3: 340 85% 60%; /* Pinkish Red */
-        --chart-4: 50 100% 60%; /* GenZ Yellow */
-        --chart-5: 130 70% 50%; /* Neon Green */
-    }
+    /* 📊 Chart Colors - Monochrome + Neon */
+    --chart-1: 190 100% 65%;  /* Cyan */
+    --chart-2: 0 0% 95%;      /* White */
+    --chart-3: 0 0% 40%;      /* Mid Gray */
+    --chart-4: 240 6% 15%;    /* Dark Gray */
+    --chart-5: 160 100% 60%;  /* Neon Green (optional alt accent) */
+  }
 }
 
 @layer base {
-    ::-webkit-scrollbar {
-        display: none;
-    }
+  ::-webkit-scrollbar {
+    display: none;
+  }
 
-    * {
-        @apply border-border !cursor-none;
-    }
+  * {
+    @apply border-border !cursor-none;
+  }
 
-    body {
-        @apply bg-background text-foreground font-roboto-flex;
-    }
+  body {
+    @apply bg-background text-foreground font-roboto-flex;
+  }
 }
 
 @layer components {
-    .grid {
-        @apply gap-[25px];
-    }
+  .grid {
+    @apply gap-[25px];
+  }
 
-    .markdown-text ul {
-        @apply pl-5 mt-2 list-disc;
-    }
+  .markdown-text ul {
+    @apply pl-5 mt-2 list-disc;
+  }
 }

@@ -1,156 +1,129 @@
 'use client';
+
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
-import { MoveUpRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { GENERAL_INFO, SOCIAL_LINKS } from '@/lib/data';
 
-const COLORS = [
-    'bg-yellow-500 text-black',
-    'bg-blue-500 text-white',
-    'bg-teal-500 text-black',
-    'bg-indigo-500 text-white',
-];
-
 const MENU_LINKS = [
-    {
-        name: 'Home',
-        url: '/',
-    },
-    {
-        name: 'About Me',
-        url: '/#about-me',
-    },
-    {
-        name: 'Experience',
-        url: '/#my-experience',
-    },
-    {
-        name: 'Projects',
-        url: '/#selected-projects',
-    },
+    { name: 'Home', url: '/' },
+    { name: 'About Me', url: '/#about-me' },
+    { name: 'Experience', url: '/#experience' },
+    { name: 'Projects', url: '/#projects' },
 ];
 
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const router = useRouter();
 
+    const handleNavigation = (url: string) => {
+        if (url.startsWith('/#')) {
+            // Use native scrolling for hash links
+            window.location.href = url;
+        } else {
+            router.push(url);
+        }
+        setIsMenuOpen(false);
+    };
+
     return (
         <>
-            <div className="sticky top-0 z-[4]">
-                <button
-                    className={cn(
-                        'group size-12 absolute top-5 right-5 md:right-10 z-[2]',
-                    )}
-                    onClick={() => setIsMenuOpen(!isMenuOpen)}
-                >
-                    <span
-                        className={cn(
-                            'inline-block w-3/5 h-0.5 bg-foreground rounded-full absolute left-1/2 -translate-x-1/2 top-1/2 duration-300 -translate-y-[5px] ',
-                            {
-                                'rotate-45 -translate-y-1/2': isMenuOpen,
-                                'md:group-hover:rotate-12': !isMenuOpen,
-                            },
-                        )}
-                    ></span>
-                    <span
-                        className={cn(
-                            'inline-block w-3/5 h-0.5 bg-foreground rounded-full absolute left-1/2 -translate-x-1/2 top-1/2 duration-300 translate-y-[5px] ',
-                            {
-                                '-rotate-45 -translate-y-1/2': isMenuOpen,
-                                'md:group-hover:-rotate-12': !isMenuOpen,
-                            },
-                        )}
-                    ></span>
-                </button>
-            </div>
+            {/* Top Fixed Navbar */}
+            <nav className="fixed top-0 left-0 w-full z-50 bg-black text-white border-b border-neutral-800">
+                <div className="container mx-auto flex justify-between items-center py-4 px-6">
+                    {/* Logo / Name */}
+                    {/* <button
+                        onClick={() => router.push('/')}
+                        className="font-anton text-xl uppercase tracking-widest hover:text-primary transition-colors"
+                    >
+                        LUKMAAN
+                    </button> */}
 
+                    {/* Desktop Menu */}
+                    <ul className="hidden md:flex gap-10 font-anton uppercase text-sm tracking-wide">
+                        {MENU_LINKS.map((link) => (
+                            <li key={link.name}>
+                                <button
+                                    onClick={() => handleNavigation(link.url)}
+                                    className="hover:text-primary transition-colors"
+                                >
+                                    {link.name}
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
+
+                    {/* Mobile Burger */}
+                    <button
+                        className="md:hidden flex flex-col justify-center items-center gap-1.5"
+                        onClick={() => setIsMenuOpen(!isMenuOpen)}
+                        aria-label="Toggle Menu"
+                        aria-expanded={isMenuOpen}
+                    >
+                        <span
+                            className={cn(
+                                'block w-6 h-0.5 bg-white transition-transform',
+                                isMenuOpen && 'rotate-45 translate-y-[6px]'
+                            )}
+                        />
+                        <span
+                            className={cn(
+                                'block w-6 h-0.5 bg-white transition-opacity',
+                                isMenuOpen && 'opacity-0'
+                            )}
+                        />
+                        <span
+                            className={cn(
+                                'block w-6 h-0.5 bg-white transition-transform',
+                                isMenuOpen && '-rotate-45 -translate-y-[6px]'
+                            )}
+                        />
+                    </button>
+                </div>
+            </nav>
+
+            {/* Mobile Overlay Menu */}
             <div
                 className={cn(
-                    'overlay fixed inset-0 z-[2] bg-black/70 transition-all duration-150',
-                    {
-                        'opacity-0 invisible pointer-events-none': !isMenuOpen,
-                    },
-                )}
-                onClick={() => setIsMenuOpen(false)}
-            ></div>
-
-            <div
-                className={cn(
-                    'fixed top-0 right-0 h-[100dvh] w-[500px] max-w-[calc(100vw-3rem)] transform translate-x-full transition-transform duration-700 z-[3] overflow-hidden gap-y-14',
-                    'flex flex-col lg:justify-center py-10',
-                    { 'translate-x-0': isMenuOpen },
+                    'fixed inset-0 bg-black text-white flex flex-col justify-center items-center gap-10 z-40 transition-all duration-500',
+                    isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
                 )}
             >
-                <div
-                    className={cn(
-                        'fixed inset-0 scale-150 translate-x-1/2 rounded-[50%] bg-background-light duration-700 delay-150 z-[-1]',
-                        {
-                            'translate-x-0': isMenuOpen,
-                        },
-                    )}
-                ></div>
+                <ul className="flex flex-col gap-8 font-anton text-3xl uppercase text-center">
+                    {MENU_LINKS.map((link) => (
+                        <li key={link.name}>
+                            <button
+                                onClick={() => handleNavigation(link.url)}
+                                className="hover:text-primary transition-colors"
+                            >
+                                {link.name}
+                            </button>
+                        </li>
+                    ))}
+                </ul>
 
-                <div className="grow flex md:items-center w-full max-w-[300px] mx-8 sm:mx-auto">
-                    <div className="flex gap-10 lg:justify-between max-lg:flex-col w-full">
-                        <div className="max-lg:order-2">
-                            <p className="text-muted-foreground mb-5 md:mb-8">
-                                SOCIAL
-                            </p>
-                            <ul className="space-y-3">
-                                {SOCIAL_LINKS.map((link) => (
-                                    <li key={link.name}>
-                                        <a
-                                            href={link.url}
-                                            target="_blank"
-                                            rel="noreferrer"
-                                            className="text-lg capitalize hover:underline"
-                                        >
-                                            {link.name}
-                                        </a>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                        <div className="">
-                            <p className="text-muted-foreground mb-5 md:mb-8">
-                                MENU
-                            </p>
-                            <ul className="space-y-3">
-                                {MENU_LINKS.map((link, idx) => (
-                                    <li key={link.name}>
-                                        <button
-                                            onClick={() => {
-                                                router.push(link.url);
-                                                setIsMenuOpen(false);
-                                            }}
-                                            className="group text-xl flex items-center gap-3"
-                                        >
-                                            <span
-                                                className={cn(
-                                                    'size-3.5 bg-white/20 rounded-full flex items-center justify-center group-hover:scale-[200%] transition-all',
-                                                    COLORS[idx],
-                                                )}
-                                            >
-                                                <MoveUpRight
-                                                    size={8}
-                                                    className="scale-0 group-hover:scale-100 transition-all"
-                                                />
-                                            </span>
-                                            {link.name}
-                                        </button>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="w-full max-w-[300px] mx-8 sm:mx-auto">
-                    <p className="text-muted-foreground mb-4">GET IN TOUCH</p>
-                    <a href={`mailto:${GENERAL_INFO.email}`}>
+                {/* Contact + Socials */}
+                <div className="mt-10 text-sm text-neutral-400 text-center">
+                    <p className="mb-2">GET IN TOUCH</p>
+                    <a
+                        href={`mailto:${GENERAL_INFO.email}`}
+                        className="hover:text-primary transition-colors block"
+                    >
                         {GENERAL_INFO.email}
                     </a>
+                    <div className="flex gap-6 justify-center mt-4">
+                        {SOCIAL_LINKS.map((link) => (
+                            <a
+                                key={link.name}
+                                href={link.url}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="hover:text-primary transition-colors uppercase text-xs"
+                            >
+                                {link.name}
+                            </a>
+                        ))}
+                    </div>
                 </div>
             </div>
         </>

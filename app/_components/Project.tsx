@@ -1,3 +1,5 @@
+'use client';
+
 import TransitionLink from '@/components/TransitionLink';
 import { IProject } from '@/types';
 import { useGSAP } from '@gsap/react';
@@ -7,112 +9,80 @@ import { useRef } from 'react';
 interface Props {
     index: number;
     project: IProject;
-    onMouseEnter: (_slug: string) => void;
 }
 
 gsap.registerPlugin(useGSAP);
 
-const Project = ({ index, project, onMouseEnter }: Props) => {
-    const externalLinkSVGRef = useRef<SVGSVGElement>(null);
+const Project = ({ index, project }: Props) => {
+    const linkRef = useRef<HTMLAnchorElement>(null);
 
-    const { context, contextSafe } = useGSAP(() => {}, {
-        scope: externalLinkSVGRef,
-        revertOnUpdate: true,
-    });
+    useGSAP(() => {
+        const ctx = gsap.context(() => {
+            // Hover underline animation
+            gsap.fromTo(
+                linkRef.current,
+                { '--underline-progress': 0 },
+                {
+                    '--underline-progress': 1,
+                    ease: 'power3.out',
+                    duration: 0.4,
+                    paused: true,
+                }
+            );
+        }, linkRef);
 
-    const handleMouseEnter = contextSafe?.(() => {
-        onMouseEnter(project.slug);
+        return () => ctx.revert();
+    }, []);
 
-        const arrowLine = externalLinkSVGRef.current?.querySelector(
-            '#arrow-line',
-        ) as SVGPathElement;
-        const arrowCurb = externalLinkSVGRef.current?.querySelector(
-            '#arrow-curb',
-        ) as SVGPathElement;
-        const box = externalLinkSVGRef.current?.querySelector(
-            '#box',
-        ) as SVGPathElement;
-
-        gsap.set(box, {
-            opacity: 0,
-            strokeDasharray: box?.getTotalLength(),
-            strokeDashoffset: box?.getTotalLength(),
+    const handleMouseEnter = () => {
+        gsap.to(linkRef.current, {
+            '--underline-progress': 1,
+            duration: 0.4,
+            ease: 'power3.out',
         });
-        gsap.set(arrowLine, {
-            opacity: 0,
-            strokeDasharray: arrowLine?.getTotalLength(),
-            strokeDashoffset: arrowLine?.getTotalLength(),
-        });
-        gsap.set(arrowCurb, {
-            opacity: 0,
-            strokeDasharray: arrowCurb?.getTotalLength(),
-            strokeDashoffset: arrowCurb?.getTotalLength(),
-        });
+    };
 
-        const tl = gsap.timeline({ repeat: -1, repeatDelay: 1 });
-        tl.to(externalLinkSVGRef.current, { autoAlpha: 1 })
-            .to(box, { opacity: 1, strokeDashoffset: 0 })
-            .to(
-                arrowLine,
-                { opacity: 1, strokeDashoffset: 0 },
-                '<0.2',
-            )
-            .to(arrowCurb, { opacity: 1, strokeDashoffset: 0 })
-            .to(externalLinkSVGRef.current, { autoAlpha: 0 }, '+=1');
-    });
-
-    const handleMouseLeave = contextSafe?.(() => {
-        context.kill();
-    });
+    const handleMouseLeave = () => {
+        gsap.to(linkRef.current, {
+            '--underline-progress': 0,
+            duration: 0.3,
+            ease: 'power3.in',
+        });
+    };
 
     return (
         <TransitionLink
             href={`/projects/${project.slug}`}
-            className="project-item group leading-none py-5 md:border-b first:!pt-0 last:pb-0 last:border-none md:group-hover/projects:opacity-30 md:hover:!opacity-100 transition-all"
+            ref={linkRef}
+            className="project-item block relative overflow-hidden"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
-            <div className="flex gap-2 md:gap-5">
-                <div className="font-anton text-muted-foreground">
-                    _{(index + 1).toString().padStart(2, '0')}.
-                </div>
+            <div className="flex items-center gap-4">
+                {/* Index */}
+                <span className="font-anton text-neutral-500 text-xl">
+                    _{(index + 1).toString().padStart(2, '0')}
+                </span>
+
                 <div>
-                    <h4 className="text-4xl xs:text-6xl flex gap-4 font-anton transition-all duration-700 bg-gradient-to-r from-primary to-foreground from-[50%] to-[50%] bg-[length:200%] bg-right bg-clip-text text-transparent group-hover:bg-left">
+                    {/* Title */}
+                    <h3 className="font-anton text-4xl md:text-5xl uppercase text-white">
                         {project.title}
-                        <span className="text-foreground opacity-0 group-hover:opacity-100 transition-all">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="36"
-                                height="36"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                ref={externalLinkSVGRef}
-                            >
-                                <path
-                                    id="box"
-                                    d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
-                                ></path>
-                                <path id="arrow-line" d="M10 14 21 3"></path>
-                                <path id="arrow-curb" d="M15 3h6v6"></path>
-                            </svg>
-                        </span>
-                    </h4>
-                    <div className="mt-2 flex flex-wrap gap-3 text-muted-foreground text-xs">
-                        {project.techStack.slice(0, 3).map((tech, idx, stackArr) => (
-                            <div className="gap-3 flex items-center" key={tech}>
-                                <span>{tech}</span>
-                                {idx !== stackArr.length - 1 && (
-                                    <span className="inline-block size-2 rounded-full bg-background-light"></span>
-                                )}
-                            </div>
-                        ))}
-                    </div>
+                    </h3>
+                    {/* Date / Year */}
+                    {/* <p className="mt-1 text-neutral-400 uppercase text-sm">
+            {project.year ?? project.date}
+          </p> */}
                 </div>
             </div>
+
+            {/* Underline (custom CSS) */}
+            <span
+                className="absolute left-0 bottom-0 h-[2px] bg-white origin-left"
+                style={{
+                    transform: 'scaleX(var(--underline-progress, 0))',
+                }}
+            />
         </TransitionLink>
     );
 };

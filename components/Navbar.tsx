@@ -3,7 +3,7 @@
 import { cn } from '@/lib/utils';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { GENERAL_INFO, SOCIAL_LINKS } from '@/lib/data';
+// import { GENERAL_INFO, SOCIAL_LINKS } from '@/lib/data';
 import PixelCat from './PixelCat';
 
 const MENU_LINKS = [

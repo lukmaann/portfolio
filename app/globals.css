@@ -4,43 +4,43 @@
 
 @layer base {
   :root {
-    /* 🖤 Minimal Monochrome Base */
-    --background: 240 5% 9%;        /* Deep Charcoal Black */
-    --background-light: 240 5% 13%; /* Slightly lighter black */
-    --foreground: 0 0% 98%;         /* Almost pure white */
+    /* 🖤 Pure Monochrome Base */
+    --background: 0 0% 4%;         /* Near Black */
+    --background-light: 0 0% 10%;  /* Dark Gray */
+    --foreground: 0 0% 98%;        /* Near White */
 
-    --card: 240 6% 12%; 
-    --card-foreground: 0 0% 95%;
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 96%;
 
-    --popover: 240 6% 10%;
+    --popover: 0 0% 6%;
     --popover-foreground: 0 0% 95%;
 
-    /* ⚡ Accent: Clean Neon Cyan/Blue */
-    --primary: 190 100% 65%;       /* Electric Cyan */
-    --primary-foreground: 0 0% 98%; 
+    /* ⚡ Neon Accent — Single Pop Color */
+    --primary: 180 100% 60%;        /* Neon Cyan */
+    --primary-foreground: 0 0% 100%; 
 
-    --secondary: 0 0% 85%;         /* Neutral Gray for contrast */
-    --secondary-foreground: 240 6% 10%;
+    --secondary: 0 0% 60%;          /* Neutral Gray */
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 240 5% 20%; 
-    --muted-foreground: 240 5% 70%;
+    --muted: 0 0% 25%; 
+    --muted-foreground: 0 0% 70%;
 
-    --accent: 200 95% 65%;         /* Slightly softer neon blue */
+    --accent: 180 100% 60%;         /* Match neon cyan for cohesion */
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 85% 55%;      /* Red for errors only */
+    --destructive: 0 80% 50%;       /* Red reserved for errors */
     --destructive-foreground: 0 0% 100%;
 
-    --border: 240 6% 20%;
-    --input: 240 6% 18%;
-    --ring: 190 100% 65%;          /* Neon Cyan glow */
+    --border: 0 0% 20%;
+    --input: 0 0% 18%;
+    --ring: 180 100% 60%;           /* Cyan glow */
 
-    /* 📊 Chart Colors - Monochrome + Neon */
-    --chart-1: 190 100% 65%;  /* Cyan */
+    /* 📊 Chart Colors — Keep minimal */
+    --chart-1: 180 100% 60%;  /* Cyan */
     --chart-2: 0 0% 95%;      /* White */
     --chart-3: 0 0% 40%;      /* Mid Gray */
-    --chart-4: 240 6% 15%;    /* Dark Gray */
-    --chart-5: 160 100% 60%;  /* Neon Green (optional alt accent) */
+    --chart-4: 0 0% 15%;      /* Dark Gray */
+    --chart-5: 150 100% 50%;  /* Neon Green (optional 2nd accent) */
   }
 }
 

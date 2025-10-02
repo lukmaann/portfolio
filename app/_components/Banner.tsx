@@ -21,6 +21,7 @@ const Banner = () => {
 
     return (
         <section
+            id="home"
             ref={containerRef}
             className="relative min-h-[100dvh] flex items-center justify-center text-white bg-black banner-bg overflow-hidden px-4 sm:px-6"
         >

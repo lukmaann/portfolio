@@ -1,43 +1,61 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { GENERAL_INFO, SOCIAL_LINKS } from '@/lib/data';
+import PixelCat from './PixelCat';
 
 const MENU_LINKS = [
-    { name: 'Home', url: '/' },
+    { name: 'Home', url: '/#home' },
     { name: 'About Me', url: '/#about-me' },
+    { name: 'Skills', url: '/#skills' },
     { name: 'Experience', url: '/#experience' },
     { name: 'Projects', url: '/#projects' },
 ];
 
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [currentSection, setCurrentSection] = useState('home');
     const router = useRouter();
 
     const handleNavigation = (url: string) => {
         if (url.startsWith('/#')) {
-            // Use native scrolling for hash links
-            window.location.href = url;
+            const id = url.replace('/#', '');
+            document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
         } else {
             router.push(url);
         }
         setIsMenuOpen(false);
     };
 
+    // 🔥 Track section visibility
+    useEffect(() => {
+        const sections = document.querySelectorAll('section[id]');
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        setCurrentSection(entry.target.id);
+                    }
+                });
+            },
+            {
+                threshold: 0.2, // only 20% needs to be visible
+                rootMargin: '0px 0px -20% 0px', // trigger a bit earlier
+            }
+        );
+
+        sections.forEach((sec) => observer.observe(sec));
+        return () => observer.disconnect();
+    }, []);
+
     return (
         <>
-            {/* Top Fixed Navbar */}
             <nav className="fixed top-0 left-0 w-full z-50 bg-black text-white border-b border-neutral-800">
                 <div className="container mx-auto flex justify-between items-center py-4 px-6">
-                    {/* Logo / Name */}
-                    {/* <button
-                        onClick={() => router.push('/')}
-                        className="font-anton text-xl uppercase tracking-widest hover:text-primary transition-colors"
-                    >
-                        LUKMAAN
-                    </button> */}
+                    {/* Cat */}
+                    <PixelCat currentSection={currentSection} />
 
                     {/* Desktop Menu */}
                     <ul className="hidden md:flex gap-10 font-anton uppercase text-sm tracking-wide">
@@ -45,7 +63,10 @@ const Navbar = () => {
                             <li key={link.name}>
                                 <button
                                     onClick={() => handleNavigation(link.url)}
-                                    className="hover:text-primary transition-colors"
+                                    className={cn(
+                                        'hover:text-primary transition-colors',
+                                        currentSection === link.url.replace('/#', '') && 'text-primary'
+                                    )}
                                 >
                                     {link.name}
                                 </button>
@@ -81,51 +102,6 @@ const Navbar = () => {
                     </button>
                 </div>
             </nav>
-
-            {/* Mobile Overlay Menu */}
-            <div
-                className={cn(
-                    'fixed inset-0 bg-black text-white flex flex-col justify-center items-center gap-10 z-40 transition-all duration-500',
-                    isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
-                )}
-            >
-                <ul className="flex flex-col gap-8 font-anton text-3xl uppercase text-center">
-                    {MENU_LINKS.map((link) => (
-                        <li key={link.name}>
-                            <button
-                                onClick={() => handleNavigation(link.url)}
-                                className="hover:text-primary transition-colors"
-                            >
-                                {link.name}
-                            </button>
-                        </li>
-                    ))}
-                </ul>
-
-                {/* Contact + Socials */}
-                <div className="mt-10 text-sm text-neutral-400 text-center">
-                    <p className="mb-2">GET IN TOUCH</p>
-                    <a
-                        href={`mailto:${GENERAL_INFO.email}`}
-                        className="hover:text-primary transition-colors block"
-                    >
-                        {GENERAL_INFO.email}
-                    </a>
-                    <div className="flex gap-6 justify-center mt-4">
-                        {SOCIAL_LINKS.map((link) => (
-                            <a
-                                key={link.name}
-                                href={link.url}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="hover:text-primary transition-colors uppercase text-xs"
-                            >
-                                {link.name}
-                            </a>
-                        ))}
-                    </div>
-                </div>
-            </div>
         </>
     );
 };

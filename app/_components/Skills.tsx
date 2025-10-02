@@ -33,7 +33,7 @@ const Skills = () => {
 
     return (
         <section
-            id="my-stack"
+            id="skills"
             ref={containerRef}
             className="relative bg-[#f4f4f4] text-black py-24"
         >

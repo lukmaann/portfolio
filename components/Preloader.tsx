@@ -19,52 +19,51 @@ const Preloader = () => {
                 }
             });
 
-            // PHASE 1: Refined letter reveal with subtle mask
+            // Letter reveal
             tl.to('.letter', {
                 y: 0,
                 opacity: 1,
-                stagger: 0.05,
-                duration: 1,
+                stagger: 0.08,
+                duration: 0.8,
                 ease: 'power4.out',
             }, 0.3);
 
-            // PHASE 2: Subtle line draw effect
+            // Underline draw
             tl.from('.underline', {
                 scaleX: 0,
-                duration: 0.8,
-                ease: 'power2.inOut',
-            }, '-=0.4');
-
-            // PHASE 3: Hold presence
-            tl.to({}, { duration: 0.8 });
-
-            // PHASE 4: Clean exit - letters fade and shift
-            tl.to('.letter', {
-                y: -30,
-                opacity: 0,
-                stagger: 0.03,
                 duration: 0.6,
+                ease: 'power2.inOut',
+            }, '-=0.3');
+
+            // Hold
+            tl.to({}, { duration: 0.6 });
+
+            // Exit - letters
+            tl.to('.letter', {
+                y: -20,
+                opacity: 0,
+                stagger: 0.04,
+                duration: 0.5,
                 ease: 'power2.in',
             });
 
-            // PHASE 5: Elegant curtain close
-            tl.to('.preloader-panel', {
-                scaleY: 0,
-                transformOrigin: 'top',
-                duration: 1,
-                stagger: {
-                    each: 0.06,
-                    from: 'edges',
-                },
-                ease: 'power3.inOut',
-            }, '-=0.3');
+            // Exit - underline
+            tl.to('.underline', {
+                scaleX: 0,
+                duration: 0.4,
+                ease: 'power2.in',
+            }, '-=0.4');
 
-            // PHASE 6: Final fade
+            // Fade out preloader
             tl.to(preloaderRef.current, {
                 opacity: 0,
-                pointerEvents: 'none',
-                duration: 0.5,
-            }, '-=0.4');
+                duration: 0.4,
+                onComplete: () => {
+                    if (preloaderRef.current) {
+                        preloaderRef.current.style.pointerEvents = 'none';
+                    }
+                }
+            }, '-=0.2');
         },
         { scope: preloaderRef }
     );
@@ -72,57 +71,29 @@ const Preloader = () => {
     return (
         <div
             ref={preloaderRef}
-            className="fixed inset-0 z-[9999] flex overflow-hidden bg-black"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black"
         >
-            {/* Clean panel grid */}
-            <div className="absolute inset-0 flex">
-                {Array.from({ length: 10 }).map((_, i) => (
-                    <div
-                        key={i}
-                        className="preloader-panel h-full flex-1 bg-black relative"
-                        style={{
-                            borderRight: i < 9 ? '1px solid rgba(255,255,255,0.03)' : 'none',
-                        }}
-                    />
-                ))}
+            {/* Name Container */}
+            <div className="relative">
+                <div className="flex gap-1">
+                    {name.split('').map((char, i) => (
+                        <span
+                            key={i}
+                            className="letter inline-block translate-y-12 opacity-0 text-white"
+                            style={{ fontSize: '8rem', fontWeight: 400, fontFamily: 'var(--font-anton), sans-serif' }}
+                        >
+                            {char}
+                        </span>
+                    ))}
+                </div>
+
+                {/* Underline */}
+                {/* <div className="underline absolute -bottom-2 left-0 right-0 h-0.5 bg-white origin-left" /> */}
             </div>
 
-            {/* Name Container */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
-                <div className="relative">
-                    <h1 className="font-anton text-white text-5xl sm:text-7xl md:text-9xl lg:text-[10vw] leading-none flex gap-1 tracking-wide">
-                        {name.split('').map((char, i) => (
-                            <div key={i} className="letter-mask overflow-hidden">
-                                <span
-                                    className="letter inline-block translate-y-full opacity-0"
-                                >
-                                    {char}
-                                </span>
-                            </div>
-                        ))}
-                    </h1>
-
-                    {/* Minimal underline accent */}
-                    <div
-                        className="underline h-[2px] bg-white mt-4 origin-left"
-                        style={{
-                            width: '100%',
-                        }}
-                    />
-                </div>
-
-                {/* Minimal progress indicator */}
-                <div className="mt-12 flex items-center justify-center gap-3">
-                    <div className="w-32 h-[1px] bg-white/20 relative overflow-hidden">
-                        <div
-                            className="absolute inset-y-0 left-0 bg-white transition-all duration-200 ease-out"
-                            style={{ width: `${progress}%` }}
-                        />
-                    </div>
-                    <span className="text-white/50 text-xs font-light tracking-[0.2em] tabular-nums min-w-[3ch]">
-                        {progress}
-                    </span>
-                </div>
+            {/* Progress Counter */}
+            <div className="absolute bottom-8 text-white/60 text-sm font-light tracking-widest">
+                {progress}%
             </div>
         </div>
     );

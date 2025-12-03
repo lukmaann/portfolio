@@ -79,8 +79,8 @@ const Preloader = () => {
                     {name.split('').map((char, i) => (
                         <span
                             key={i}
-                            className="letter inline-block translate-y-12 opacity-0 text-white"
-                            style={{ fontSize: '8rem', fontWeight: 400, fontFamily: 'var(--font-anton), sans-serif' }}
+                            className="letter inline-block translate-y-12 opacity-0 text-white text-5xl sm:text-7xl md:text-9xl lg:text-[10vw]"
+                            style={{ fontWeight: 400, fontFamily: 'var(--font-anton), sans-serif' }}
                         >
                             {char}
                         </span>
